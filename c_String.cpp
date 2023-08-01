@@ -151,3 +151,102 @@ int operator != ( const String & Source1, const String & Source2 )
         //opérateur différent de
         return ( strcmp( Source1.chaine, Source2.chaine ));
     }
+
+int operator == ( const String & Source1, const String & Source2 )
+    {
+        //opérateur égal
+        return ( !( Source1 != Source2 ));
+    }
+
+int operator > ( const String & Source1, const String & Source2 )
+    {
+        return ( strcmp( Source1.chaine, Source2.chaine ) >0 );
+    }
+
+int operator < ( const String & Source1, const String & Source2 )
+    {
+        return ( strcmp(Source1.chaine, Source2.chaine) <0 );
+    }
+
+int operator >= ( const String & Source1, const String & Source2 )
+    {
+        return (!(Source1<Source2));
+    }
+
+int operator <= ( const String & Source1, const String & Source2 )
+    {
+        //opérateur inférieur ou égal à
+        return (! (Source1>Source2));
+    }
+
+istream& operator >> ( istream & Flot, String & Source )
+    {
+        //opérateur de saisi dans une flux
+        int TailleMax = 80;
+        char c;
+        String Temp ( TailleMax );
+        Source = "";
+        while( Flot.get(c) && c!='\n' )
+            {
+                Flot.putback(c);
+                Flot.get( Temp.chaine, temp.tailleMem, '\n');
+                Temp.nbCarac = strlen( Temp.chaine );
+                Source+= Temp;
+            }
+
+        return Flot;
+    }
+
+ostream& operator << ( ostream & Flot, const String & Source )
+    {
+        return Flot<<"Chaine:\""<<Source.chaine<<"\"de "<<Source.nbCarac<<" et pouvant contenir "<<Source.Capacite();
+    }
+
+void String::AfficheVarClasses( ostream & Flot )
+    {
+        //fonction d'aafichage des varibles de classes
+        Flot<<String::nbInstances<<" instances occupant "<<String::memInstances<<" octets"<<endl;
+    }
+
+String String::SubString( int Debut, int NbCarac=0 )const
+    {
+        //extrait une sous chaine de nbCarac depuis la position debut
+        NbCarac = ( NbCarac>0? min( NbCarac, nbCarac ):nbCarac);
+
+        String Temp(NbCarac);
+        strncpy (Temp.chaine, chaine+Debut, NbCarac);
+        Temp.chaine[NbCarac] = '\0';
+        Temp.nbCarac= NbCarac;
+
+        return temp;
+    }
+
+int String::StringString( const String & Cherche ) const
+    {
+        /*Renvoie la position du début de la chaine Cherche dans l'objet récepteur,
+         ou une valeur négative si Cherche n'est pas trouvé */
+        return ( strstr( chaine, Cherche.chaine )-chaine);
+
+    }
+
+int String::StringChar( char Carac )const
+    {
+        /*retourne la position du caractère recherché Carac ou une valeur
+            négative si ce n'est pas trouvé*/
+        return ( strchr(chaine,Carac)-chaine );
+
+    }
+
+void String::ToUpper()
+    {
+        //met la chaine de caractère pointée par le membre chaine en majuscules
+        if( nbCarac== 0 )return;
+        for( char * Ptr = chaine; *Ptr != '\0'; Ptr++)
+            {
+                if( isalpha(*Ptr) ) *Ptr=toupper(*Ptr);
+                else
+                    if(! isdigit(*Ptr) ) *Ptr=' ';
+            }
+        Ptr--;
+        if( *Ptr ==' '){ *Ptr= '\0'; nbCarac--; }
+    }
